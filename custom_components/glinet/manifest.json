@@ -1,0 +1,13 @@
+{
+  "domain": "glinet",
+  "name": "GL.iNet Router Management",
+  "codeowners": ["@angolo40"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/angolo40/GLiNet_managment",
+  "homeassistant": "2023.1.0",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/angolo40/GLiNet_managment/issues",
+  "requirements": ["requests"],
+  "version": "1.0.0"
+}

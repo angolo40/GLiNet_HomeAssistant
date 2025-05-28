@@ -1,0 +1,55 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "GL.iNet Router Setup",
+        "description": "Configure your GL.iNet router connection",
+        "data": {
+          "host": "Router IP Address",
+          "username": "Username",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the router. Please check the IP address and network connectivity.",
+      "invalid_auth": "Invalid authentication credentials. Please check your username and password.",
+      "unknown": "Unexpected error occurred. Please try again."
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "vpn_status": {
+        "name": "VPN Status"
+      },
+      "system_status": {
+        "name": "System Status"
+      },
+      "system_info": {
+        "name": "System Info"
+      },
+      "disk_info": {
+        "name": "Disk Info"
+      }
+    },
+    "switch": {
+      "vpn": {
+        "name": "VPN {vpn_name}"
+      }
+    },
+    "button": {
+      "reboot": {
+        "name": "Reboot Router"
+      },
+      "stop_all_vpns": {
+        "name": "Stop All VPNs"
+      },
+      "check_firmware": {
+        "name": "Check Firmware"
+      }
+    }
+  }
+}
