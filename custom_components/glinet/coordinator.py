@@ -42,12 +42,20 @@ class GLiNetDataUpdateCoordinator(DataUpdateCoordinator):
             disk_info = await self.hass.async_add_executor_job(self.api.get_disk_info)
             vpn_configs = await self.hass.async_add_executor_job(self.api.get_all_vpn_configs)
             
+            # Additional monitoring data
+            load_info = await self.hass.async_add_executor_job(self.api.get_load)
+            timezone_config = await self.hass.async_add_executor_job(self.api.get_timezone_config)
+            security_policy = await self.hass.async_add_executor_job(self.api.get_security_policy)
+            
             return {
                 "vpn_status": vpn_status,
                 "system_status": system_status,
                 "system_info": system_info,
                 "disk_info": disk_info,
                 "vpn_configs": vpn_configs,
+                "load_info": load_info,
+                "timezone_config": timezone_config,
+                "security_policy": security_policy,
             }
             
         except Exception as exc:

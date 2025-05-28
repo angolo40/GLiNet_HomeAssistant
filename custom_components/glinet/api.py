@@ -345,3 +345,23 @@ class GLiNetAPI:
     def check_firmware_online(self) -> Optional[Dict]:
         """Check for firmware updates."""
         return self._make_rpc_call("system", "check_firmware_online")
+
+    def get_timezone_config(self) -> Optional[Dict]:
+        """Get timezone configuration."""
+        return self._make_rpc_call("system", "get_timezone_config")
+
+    def get_load(self) -> Optional[Dict]:
+        """Get CPU load and memory information."""
+        return self._make_rpc_call("system", "get_load")
+
+    def get_unixtime(self) -> Optional[Dict]:
+        """Get Unix timestamp."""
+        return self._make_rpc_call("system", "get_unixtime")
+
+    def get_httpd_mem_status(self) -> Optional[Dict]:
+        """Get HTTP server memory usage."""
+        return self._make_rpc_call("system", "get_httpd_mem_status")
+
+    def get_security_policy(self) -> Optional[Dict]:
+        """Get security policy settings."""
+        return self._make_rpc_call("system", "get_security_policy")
