@@ -33,11 +33,56 @@
       },
       "disk_info": {
         "name": "Disk Info"
+      },
+      "firewall_rules_count": {
+        "name": "Firewall Rules"
+      },
+      "port_forwards_count": {
+        "name": "Port Forwards"
+      },
+      "dmz_status": {
+        "name": "DMZ Status"
+      },
+      "firewall_zones": {
+        "name": "Firewall Zones"
+      },
+      "wg_server_status": {
+        "name": "WireGuard Server Status"
+      },
+      "wg_server_peers": {
+        "name": "WireGuard Server Peers"
+      },
+      "ovpn_server_status": {
+        "name": "OpenVPN Server Status"
+      },
+      "wifi_devices_status": {
+        "name": "WiFi Devices Status"
       }
     },
     "switch": {
       "vpn": {
         "name": "VPN {vpn_name}"
+      },
+      "dmz": {
+        "name": "DMZ"
+      },
+      "wan_ping": {
+        "name": "WAN Ping"
+      },
+      "wan_https_access": {
+        "name": "WAN HTTPS Access"
+      },
+      "wan_ssh_access": {
+        "name": "WAN SSH Access"
+      },
+      "wireguard_server": {
+        "name": "WireGuard Server"
+      },
+      "openvpn_server": {
+        "name": "OpenVPN Server"
+      },
+      "wifi": {
+        "name": "WiFi {ssid}"
       }
     },
     "button": {
@@ -49,6 +94,138 @@
       },
       "check_firmware": {
         "name": "Check Firmware"
+      }
+    }
+  },
+  "services": {
+    "add_firewall_rule": {
+      "name": "Add Firewall Rule",
+      "description": "Add a new firewall rule to the GL.iNet router",
+      "fields": {
+        "target": {
+          "name": "Target",
+          "description": "Action to take (ACCEPT, REJECT, DROP)"
+        },
+        "name": {
+          "name": "Rule Name",
+          "description": "Name for the firewall rule"
+        },
+        "src": {
+          "name": "Source Zone",
+          "description": "Source zone (e.g., wan, lan, guest)"
+        },
+        "src_ip": {
+          "name": "Source IP",
+          "description": "Source IP address"
+        },
+        "src_mac": {
+          "name": "Source MAC",
+          "description": "Source MAC address"
+        },
+        "src_port": {
+          "name": "Source Port",
+          "description": "Source port (1-65535)"
+        },
+        "proto": {
+          "name": "Protocol",
+          "description": "Protocol (tcp, udp, or tcp udp for both)"
+        },
+        "dest": {
+          "name": "Destination Zone",
+          "description": "Destination zone (e.g., wan, lan, guest)"
+        },
+        "dest_ip": {
+          "name": "Destination IP",
+          "description": "Destination IP address"
+        },
+        "dest_port": {
+          "name": "Destination Port",
+          "description": "Destination port (1-65535)"
+        },
+        "enabled": {
+          "name": "Enabled",
+          "description": "Whether to enable this rule"
+        }
+      }
+    },
+    "remove_firewall_rule": {
+      "name": "Remove Firewall Rule",
+      "description": "Remove a firewall rule from the GL.iNet router",
+      "fields": {
+        "rule_id": {
+          "name": "Rule ID",
+          "description": "ID of the rule to remove"
+        },
+        "remove_all": {
+          "name": "Remove All",
+          "description": "Remove all firewall rules"
+        }
+      }
+    },
+    "add_port_forward": {
+      "name": "Add Port Forward",
+      "description": "Add a port forwarding rule to the GL.iNet router",
+      "fields": {
+        "src": {
+          "name": "Source Zone",
+          "description": "Source zone (typically wan)"
+        },
+        "src_dport": {
+          "name": "Source Port",
+          "description": "External port to forward"
+        },
+        "dest": {
+          "name": "Destination Zone",
+          "description": "Destination zone (typically lan)"
+        },
+        "dest_ip": {
+          "name": "Destination IP",
+          "description": "Internal IP address to forward to"
+        },
+        "dest_port": {
+          "name": "Destination Port",
+          "description": "Internal port to forward to"
+        },
+        "name": {
+          "name": "Rule Name",
+          "description": "Name for the port forward rule"
+        },
+        "proto": {
+          "name": "Protocol",
+          "description": "Protocol (tcp, udp, or tcp udp for both)"
+        },
+        "enabled": {
+          "name": "Enabled",
+          "description": "Whether to enable this rule"
+        }
+      }
+    },
+    "remove_port_forward": {
+      "name": "Remove Port Forward",
+      "description": "Remove a port forwarding rule from the GL.iNet router",
+      "fields": {
+        "rule_id": {
+          "name": "Rule ID",
+          "description": "ID of the rule to remove"
+        },
+        "remove_all": {
+          "name": "Remove All",
+          "description": "Remove all port forwarding rules"
+        }
+      }
+    },
+    "set_dmz": {
+      "name": "Set DMZ",
+      "description": "Configure DMZ settings on the GL.iNet router",
+      "fields": {
+        "enabled": {
+          "name": "Enabled",
+          "description": "Whether to enable DMZ"
+        },
+        "dest_ip": {
+          "name": "Destination IP",
+          "description": "IP address of the DMZ host (required when enabling)"
+        }
       }
     }
   }

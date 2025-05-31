@@ -1,0 +1,198 @@
+add_firewall_rule:
+  name: Add Firewall Rule
+  description: Add a new firewall rule to the GL.iNet router
+  fields:
+    target:
+      name: Target
+      description: Action to take (ACCEPT, REJECT, DROP)
+      required: true
+      selector:
+        select:
+          options:
+            - ACCEPT
+            - REJECT
+            - DROP
+    name:
+      name: Rule Name
+      description: Name for the firewall rule
+      required: false
+      selector:
+        text:
+    src:
+      name: Source Zone
+      description: Source zone (e.g., wan, lan, guest)
+      required: false
+      selector:
+        text:
+    src_ip:
+      name: Source IP
+      description: Source IP address
+      required: false
+      selector:
+        text:
+    src_mac:
+      name: Source MAC
+      description: Source MAC address
+      required: false
+      selector:
+        text:
+    src_port:
+      name: Source Port
+      description: Source port (1-65535)
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 65535
+    proto:
+      name: Protocol
+      description: Protocol (tcp, udp, or tcp udp for both)
+      required: false
+      selector:
+        select:
+          options:
+            - tcp udp
+            - tcp
+            - udp
+    dest:
+      name: Destination Zone
+      description: Destination zone (e.g., wan, lan, guest)
+      required: false
+      selector:
+        text:
+    dest_ip:
+      name: Destination IP
+      description: Destination IP address
+      required: false
+      selector:
+        text:
+    dest_port:
+      name: Destination Port
+      description: Destination port (1-65535)
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 65535
+    enabled:
+      name: Enabled
+      description: Whether to enable this rule
+      required: false
+      default: true
+      selector:
+        boolean:
+
+remove_firewall_rule:
+  name: Remove Firewall Rule
+  description: Remove a firewall rule from the GL.iNet router
+  fields:
+    rule_id:
+      name: Rule ID
+      description: ID of the rule to remove
+      required: false
+      selector:
+        text:
+    remove_all:
+      name: Remove All
+      description: Remove all firewall rules
+      required: false
+      default: false
+      selector:
+        boolean:
+
+add_port_forward:
+  name: Add Port Forward
+  description: Add a port forwarding rule to the GL.iNet router
+  fields:
+    src:
+      name: Source Zone
+      description: Source zone (typically wan)
+      required: true
+      selector:
+        text:
+    src_dport:
+      name: Source Port
+      description: External port to forward
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 65535
+    dest:
+      name: Destination Zone
+      description: Destination zone (typically lan)
+      required: true
+      selector:
+        text:
+    dest_ip:
+      name: Destination IP
+      description: Internal IP address to forward to
+      required: true
+      selector:
+        text:
+    dest_port:
+      name: Destination Port
+      description: Internal port to forward to
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 65535
+    name:
+      name: Rule Name
+      description: Name for the port forward rule
+      required: false
+      selector:
+        text:
+    proto:
+      name: Protocol
+      description: Protocol (tcp, udp, or tcp udp for both)
+      required: false
+      selector:
+        select:
+          options:
+            - tcp udp
+            - tcp
+            - udp
+    enabled:
+      name: Enabled
+      description: Whether to enable this rule
+      required: false
+      default: true
+      selector:
+        boolean:
+
+remove_port_forward:
+  name: Remove Port Forward
+  description: Remove a port forwarding rule from the GL.iNet router
+  fields:
+    rule_id:
+      name: Rule ID
+      description: ID of the rule to remove
+      required: false
+      selector:
+        text:
+    remove_all:
+      name: Remove All
+      description: Remove all port forwarding rules
+      required: false
+      default: false
+      selector:
+        boolean:
+
+set_dmz:
+  name: Set DMZ
+  description: Configure DMZ settings on the GL.iNet router
+  fields:
+    enabled:
+      name: Enabled
+      description: Whether to enable DMZ
+      required: true
+      selector:
+        boolean:
+    dest_ip:
+      name: Destination IP
+      description: IP address of the DMZ host (required when enabling)
+      required: false
+      selector:
+        text:

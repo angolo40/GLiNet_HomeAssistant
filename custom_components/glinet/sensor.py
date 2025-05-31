@@ -203,6 +203,55 @@ SENSOR_DESCRIPTIONS = [
         name="Disk Info",
         icon="mdi:harddisk",
     ),
+    
+    # Firewall Status
+    SensorEntityDescription(
+        key="firewall_rules_count",
+        name="Firewall Rules",
+        icon="mdi:shield-check",
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="port_forwards_count",
+        name="Port Forwards",
+        icon="mdi:lan-connect",
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="dmz_status",
+        name="DMZ Status",
+        icon="mdi:shield-off",
+    ),
+    SensorEntityDescription(
+        key="firewall_zones",
+        name="Firewall Zones",
+        icon="mdi:shield-home",
+    ),
+    
+    # VPN Server Status
+    SensorEntityDescription(
+        key="wg_server_status",
+        name="WireGuard Server Status",
+        icon="mdi:vpn",
+    ),
+    SensorEntityDescription(
+        key="wg_server_peers",
+        name="WireGuard Server Peers",
+        icon="mdi:account-network",
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="ovpn_server_status",
+        name="OpenVPN Server Status",
+        icon="mdi:vpn",
+    ),
+    
+    # WiFi Status
+    SensorEntityDescription(
+        key="wifi_devices_status",
+        name="WiFi Devices Status",
+        icon="mdi:wifi",
+    ),
 ]
 
 
@@ -249,6 +298,13 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
         system_info = self.coordinator.data.get("system_info", {})
         disk_info = self.coordinator.data.get("disk_info", {})
         vpn_status = self.coordinator.data.get("vpn_status", {})
+        firewall_rules = self.coordinator.data.get("firewall_rules", {})
+        port_forwards = self.coordinator.data.get("port_forwards", {})
+        dmz_config = self.coordinator.data.get("dmz", {})
+        zone_list = self.coordinator.data.get("zone_list", {})
+        wg_server_status = self.coordinator.data.get("wg_server_status", {})
+        ovpn_server_status = self.coordinator.data.get("ovpn_server_status", {})
+        wifi_status_detail = self.coordinator.data.get("wifi_status_detail", {})
         
         key = self.entity_description.key
         
@@ -388,6 +444,52 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
         elif key == "disk_info":
             return "Available" if disk_info else "Unavailable"
         
+        # Firewall sensors
+        elif key == "firewall_rules_count":
+            rules = firewall_rules.get("res", [])
+            return len(rules)
+        
+        elif key == "port_forwards_count":
+            forwards = port_forwards.get("res", [])
+            return len(forwards)
+        
+        elif key == "dmz_status":
+            if dmz_config.get("enabled"):
+                return f"Enabled ({dmz_config.get('dest_ip', 'No IP')})"
+            return "Disabled"
+        
+        elif key == "firewall_zones":
+            internals = zone_list.get("internals", [])
+            externals = zone_list.get("externals", [])
+            total = len(internals) + len(externals)
+            return f"{total} zones ({len(internals)} internal, {len(externals)} external)"
+        
+        # VPN Server sensors
+        elif key == "wg_server_status":
+            server_info = wg_server_status.get("server", {})
+            if server_info.get("status", 0) == 1:
+                return "Running"
+            elif server_info.get("initialization", False):
+                return "Initialized"
+            return "Stopped"
+        
+        elif key == "wg_server_peers":
+            peers = wg_server_status.get("peers", [])
+            connected = len([p for p in peers if p.get("status") == 1])
+            return connected
+        
+        elif key == "ovpn_server_status":
+            if ovpn_server_status.get("status", 0) == 1:
+                return "Running"
+            elif ovpn_server_status.get("initialization", False):
+                return "Initialized"
+            return "Stopped"
+        
+        elif key == "wifi_devices_status":
+            devices = wifi_status_detail.get("res", [])
+            ready_count = sum(1 for d in devices if d.get("state") == "ready")
+            return f"{ready_count}/{len(devices)} Ready"
+        
         return "Unknown"
 
     @property
@@ -397,6 +499,14 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
         system_info = self.coordinator.data.get("system_info", {})
         disk_info = self.coordinator.data.get("disk_info", {})
         vpn_status = self.coordinator.data.get("vpn_status", {})
+        firewall_rules = self.coordinator.data.get("firewall_rules", {})
+        port_forwards = self.coordinator.data.get("port_forwards", {})
+        dmz_config = self.coordinator.data.get("dmz", {})
+        zone_list = self.coordinator.data.get("zone_list", {})
+        wg_server_status = self.coordinator.data.get("wg_server_status", {})
+        wg_server_config = self.coordinator.data.get("wg_server_config", {})
+        ovpn_server_status = self.coordinator.data.get("ovpn_server_status", {})
+        wifi_status_detail = self.coordinator.data.get("wifi_status_detail", {})
         
         key = self.entity_description.key
         
@@ -513,6 +623,69 @@ class GLiNetSensor(CoordinatorEntity, SensorEntity):
                 "netnat_enabled": system_data.get("netnat_enabled"),
                 "timestamp": system_data.get("timestamp"),
             }
+        
+        # Firewall attributes
+        elif key == "firewall_rules_count":
+            rules = firewall_rules.get("res", [])
+            return {"rules": rules}
+        
+        elif key == "port_forwards_count":
+            forwards = port_forwards.get("res", [])
+            return {"forwards": forwards}
+        
+        elif key == "dmz_status":
+            return dmz_config
+        
+        elif key == "firewall_zones":
+            return zone_list
+        
+        # VPN Server attributes
+        elif key == "wg_server_status":
+            server_info = wg_server_status.get("server", {})
+            return {
+                "initialization": server_info.get("initialization", False),
+                "tunnel_ip": server_info.get("tunnel_ip"),
+                "rx_bytes": server_info.get("rx_bytes"),
+                "tx_bytes": server_info.get("tx_bytes"),
+                "port": wg_server_config.get("port"),
+                "public_key": wg_server_config.get("public_key"),
+                "ipv6_enabled": wg_server_config.get("ipv6_enable", False),
+            }
+        
+        elif key == "wg_server_peers":
+            peers = wg_server_status.get("peers", [])
+            peer_info = {}
+            for peer in peers:
+                name = peer.get("name", "unknown")
+                peer_info[name] = {
+                    "status": "Online" if peer.get("status") == 1 else "Offline",
+                    "private_ip": peer.get("private_ip"),
+                    "public_ip": peer.get("public_ip"),
+                    "latest_handshake": peer.get("latest_handshake"),
+                    "rx_bytes": peer.get("rx_bytes"),
+                    "tx_bytes": peer.get("tx_bytes"),
+                }
+            return {"peers": peer_info}
+        
+        elif key == "ovpn_server_status":
+            return {
+                "initialization": ovpn_server_status.get("initialization", False),
+                "tunnel_ip": ovpn_server_status.get("tunnel_ip"),
+                "rx_bytes": ovpn_server_status.get("rx_bytes"),
+                "tx_bytes": ovpn_server_status.get("tx_bytes"),
+                "log": ovpn_server_status.get("log"),
+            }
+        
+        elif key == "wifi_devices_status":
+            devices = wifi_status_detail.get("res", [])
+            device_info = {}
+            for device in devices:
+                name = device.get("name", "unknown")
+                device_info[name] = {
+                    "state": device.get("state", "unknown"),
+                    "channel": device.get("channel"),
+                }
+            return {"devices": device_info}
         
         return {}
 

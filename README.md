@@ -1,6 +1,6 @@
 # GLiNet Home Assistant Integration
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg?cacheSeconds=2592000)](https://github.com/angolo40/GLiNet_HomeAssistant)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg?cacheSeconds=2592000)](https://github.com/angolo40/GLiNet_HomeAssistant)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 
