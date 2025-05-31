@@ -9,5 +9,5 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/angolo40/GLiNet_managment/issues",
   "requirements": ["requests"],
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

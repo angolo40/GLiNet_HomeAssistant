@@ -365,3 +365,124 @@ class GLiNetAPI:
     def get_security_policy(self) -> Optional[Dict]:
         """Get security policy settings."""
         return self._make_rpc_call("system", "get_security_policy")
+
+    # Firewall methods
+    def get_firewall_rules(self) -> Optional[Dict]:
+        """Get firewall rule list."""
+        return self._make_rpc_call("firewall", "get_rule_list")
+
+    def add_firewall_rule(self, rule_params: Dict[str, Any]) -> Optional[Dict]:
+        """Add a firewall rule."""
+        return self._make_rpc_call("firewall", "add_rule", rule_params)
+
+    def remove_firewall_rule(self, rule_id: str = None, remove_all: bool = False) -> Optional[Dict]:
+        """Remove a firewall rule."""
+        params = {}
+        if remove_all:
+            params["all"] = True
+        elif rule_id:
+            params["id"] = rule_id
+        return self._make_rpc_call("firewall", "remove_rule", params)
+
+    def set_firewall_rule(self, rule_id: str, rule_params: Dict[str, Any]) -> Optional[Dict]:
+        """Modify an existing firewall rule."""
+        params = rule_params.copy()
+        params["id"] = rule_id
+        return self._make_rpc_call("firewall", "set_rule", params)
+
+    def get_dmz_config(self) -> Optional[Dict]:
+        """Get DMZ configuration."""
+        return self._make_rpc_call("firewall", "get_dmz")
+
+    def set_dmz_config(self, enabled: bool, dest_ip: str = None) -> Optional[Dict]:
+        """Set DMZ configuration."""
+        params = {"enabled": enabled}
+        if enabled and dest_ip:
+            params["dest_ip"] = dest_ip
+        return self._make_rpc_call("firewall", "set_dmz", params)
+
+    def get_port_forward_list(self) -> Optional[Dict]:
+        """Get port forward list."""
+        return self._make_rpc_call("firewall", "get_port_forward_list")
+
+    def add_port_forward(self, forward_params: Dict[str, Any]) -> Optional[Dict]:
+        """Add port forward rule."""
+        return self._make_rpc_call("firewall", "add_port_forward", forward_params)
+
+    def set_port_forward(self, rule_id: str, forward_params: Dict[str, Any]) -> Optional[Dict]:
+        """Modify an existing port forward rule."""
+        params = forward_params.copy()
+        params["id"] = rule_id
+        return self._make_rpc_call("firewall", "set_port_forward", params)
+
+    def remove_port_forward(self, rule_id: str = None, remove_all: bool = False) -> Optional[Dict]:
+        """Remove port forward rule."""
+        params = {}
+        if remove_all:
+            params["all"] = True
+        elif rule_id:
+            params["id"] = rule_id
+        return self._make_rpc_call("firewall", "remove_port_forward", params)
+
+    def get_wan_access(self) -> Optional[Dict]:
+        """Get WAN access configuration."""
+        return self._make_rpc_call("firewall", "get_wan_access")
+
+    def set_wan_access(self, config: Dict[str, Any]) -> Optional[Dict]:
+        """Set WAN access configuration."""
+        return self._make_rpc_call("firewall", "set_wan_access", config)
+
+    def get_zone_list(self) -> Optional[Dict]:
+        """Get firewall zone list."""
+        return self._make_rpc_call("firewall", "get_zone_list")
+
+    # WireGuard Server methods
+    def get_wg_server_status(self) -> Optional[Dict]:
+        """Get WireGuard server status."""
+        return self._make_rpc_call("wg-server", "get_status")
+
+    def start_wg_server(self) -> Optional[Dict]:
+        """Start WireGuard server."""
+        return self._make_rpc_call("wg-server", "start")
+
+    def stop_wg_server(self) -> Optional[Dict]:
+        """Stop WireGuard server."""
+        return self._make_rpc_call("wg-server", "stop")
+
+    def get_wg_server_config(self) -> Optional[Dict]:
+        """Get WireGuard server configuration."""
+        return self._make_rpc_call("wg-server", "get_config")
+
+    def set_wg_server_config(self, config: Dict[str, Any]) -> Optional[Dict]:
+        """Set WireGuard server configuration."""
+        return self._make_rpc_call("wg-server", "set_config", config)
+
+    def set_wg_server_peer(self, peer_config: Dict[str, Any]) -> Optional[Dict]:
+        """Modify WireGuard peer configuration."""
+        return self._make_rpc_call("wg-server", "set_peer", peer_config)
+
+    # OpenVPN Server methods
+    def get_ovpn_server_status(self) -> Optional[Dict]:
+        """Get OpenVPN server status."""
+        return self._make_rpc_call("ovpn-server", "get_status")
+
+    def start_ovpn_server(self) -> Optional[Dict]:
+        """Start OpenVPN server."""
+        return self._make_rpc_call("ovpn-server", "start")
+
+    def stop_ovpn_server(self) -> Optional[Dict]:
+        """Stop OpenVPN server."""
+        return self._make_rpc_call("ovpn-server", "stop")
+
+    # WiFi methods
+    def get_wifi_config(self) -> Optional[Dict]:
+        """Get WiFi configuration."""
+        return self._make_rpc_call("wifi", "get_config")
+
+    def set_wifi_config(self, config: Dict[str, Any]) -> Optional[Dict]:
+        """Set WiFi configuration."""
+        return self._make_rpc_call("wifi", "set_config", config)
+
+    def get_wifi_status(self) -> Optional[Dict]:
+        """Get WiFi device status."""
+        return self._make_rpc_call("wifi", "get_status")
