@@ -474,6 +474,13 @@ class GLiNetAPI:
         """Stop OpenVPN server."""
         return self._make_rpc_call("ovpn-server", "stop")
 
+    def get_clients(self) -> List[Dict]:
+        """Get all connected clients."""
+        result = self._make_rpc_call("clients", "get_list")
+        if not result or "clients" not in result:
+            return []
+        return result.get("clients", [])
+
     # WiFi methods
     def get_wifi_config(self) -> Optional[Dict]:
         """Get WiFi configuration."""
