@@ -62,6 +62,7 @@ class GLiNetDataUpdateCoordinator(DataUpdateCoordinator):
             # WiFi data
             wifi_config = await self.hass.async_add_executor_job(self.api.get_wifi_config)
             wifi_status_detail = await self.hass.async_add_executor_job(self.api.get_wifi_status)
+            clients = await self.hass.async_add_executor_job(self.api.get_clients)
             
             return {
                 "vpn_status": vpn_status,
@@ -82,6 +83,7 @@ class GLiNetDataUpdateCoordinator(DataUpdateCoordinator):
                 "ovpn_server_status": ovpn_server_status,
                 "wifi_config": wifi_config,
                 "wifi_status_detail": wifi_status_detail,
+                "clients": clients,
             }
             
         except Exception as exc:
